@@ -7,13 +7,7 @@ dir="$(dirname "$0")"
 
 . $dir/functies/controleer
 . $dir/functies/opschonen
-. $dir/functies/codecs
-. $dir/functies/configureren
-. $dir/functies/ontwikkeling
-. $dir/functies/favorieten
-. $dir/functies/derdeparty
-. $dir/functies/opwaarderen
-. $dir/functies/utilities   
+. $dir/functies/opwaarderen   
 
 #----- Fancy Messages -----#
 show_error(){
@@ -48,12 +42,6 @@ function main {
         --cancel-button "Verlaten" \
         $LINES $COLUMNS $(( $LINES - 12 )) \
         opwaarderen         'Voer een systeem opwaardering uit' \
-        favs                'Installeer voorkeur applicaties' \
-        hulpmiddelen        'Installeer voorkeur systeem hulpprogramma's' \
-        ontwikkeling        'Installeer voorkeur programmeer gereedschap' \
-        codecs              'Installeer Ubuntu beperkte Extras' \
-        derdeparty          'Installeer derde-partij software' \
-        configureren        'Configureer systeem' \
         opschonen           'Maak het systeem schoon' \
         3>&1 1>&2 2>&3)
      
