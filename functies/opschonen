@@ -8,7 +8,7 @@ VERWIJDEREN="$dir/data/verwijderen.lijst"
 function unused {
     if (eval `resize` && whiptail \
         --title "Verwijderen van ongebruikte voor geinstalleerde Applicaties" \
-        --yesno "Current list of pre-installed applications to remove: \n\n$(cat $VERWIJDEREN) \n\nAre you sure you want proceed?" \
+        --yesno "Huidige lijst van te verwijderen voor geinstalleerde programma's: \n\n$(cat $VERWIJDEREN) \n\nWeet u het zeker?" \
         $LINES $COLUMNS $(( $LINES - 12 )) \
         --scrolltext ) then
         show_info 'Verwijderen van ongebruikte voor geinstalleerde programma's...'
@@ -25,12 +25,12 @@ function unused {
 
 # Verwijdere oude kernels
 function kernels {
-    if (whiptail --title "Verwijder buiten datum kernels" --yesno "If you're not currently using the newest kernel installed on your system, the following may break it. \n\nAre you sure you want proceed?" 10 60) then
-        show_info 'Removing outdated kernel(s)...'
-        show_warning 'Requires root privileges'
+    if (whiptail --title "Verwijder van ongebruite kernels" --yesno "If you're not currently using the newest kernel installed on your system, the following may break it. \n\nAre you sure you want proceed?" 10 60) then
+        show_info 'Verwijderen van oudere kernel(s)...'
+        show_warning 'Vereist administrator rechetn'
         sudo dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | grep -v linux-libc-dev | xargs sudo apt-get -y --no-install-recommends purge
-        show_success 'Done.'
-        whiptail --title "Finished" --msgbox "Outdated kernels have been successfully removed." 8 78
+        show_success 'Klaar.'
+        whiptail --title "Voltooid" --msgbox "Oudere kernels zijn succesvol verwijderd." 8 78
         cleanup
     else
         cleanup
