@@ -5,7 +5,7 @@ dir="$(dirname "$0")"
 VERWIJDEREN="$dir/data/verwijderen.lijst"
 
 # Remove unused/unwanted packages that are listed in 'data/purge.list'
-function unused {
+function ongebruikt {
     if (eval `resize` && whiptail \
         --title "Verwijderen van ongebruikte voor geinstalleerde Applicaties" \
         --yesno "Huidige lijst van te verwijderen voor geinstalleerde programma's: \n\n$(cat $VERWIJDEREN) \n\nWeet u het zeker?" \
@@ -38,17 +38,17 @@ function kernels {
 }
 
 # Remove Orphaned Packages
-function orphaned {
-    show_info 'Removing orphaned packages...'
-    show_warning 'Requires root privileges'
+function ongebruikte {
+    show_info 'Verwijderen ongebruikte pakketen...'
+    show_warning 'Vereist administrator rechten'
     sudo apt-get autoremove -y
-    show_success 'Done.'
-    whiptail --title "Finished" --msgbox "Orphaned packages have been successfully removed." 8 78
+    show_success 'Klaar.'
+    whiptail --title "Voltooid" --msgbox "Ongebruikte pakketen zijn succesvol verwijderd." 8 78
     cleanup
 }
 
 # Remove Leftover Config files
-function leftovers {
+function overblijfsels {
     show_info 'Removing leftover configuration files...'
     show_warning 'Requires root privileges'
     sudo dpkg --purge $(COLUMNS=200 dpkg -l | grep '^rc' | tr -s ' ' | cut -d ' ' -f 2)
