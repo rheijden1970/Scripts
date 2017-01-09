@@ -4,7 +4,7 @@ dir="$(dirname "$0")"
 
 VERWIJDEREN="$dir/data/verwijderen.lijst"
 
-# Remove unused/unwanted packages that are listed in 'data/purge.list'
+# verwijder van overbodige voor geinstalleerde applicaties vermeld in 'data/overbodige.lijst'
 function overbodig {
     if (eval `resize` && whiptail \
         --title "Verwijderen van overbodige voor geinstalleerde Applicaties" \
