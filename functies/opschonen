@@ -38,7 +38,7 @@ function kernels {
 }
 
 # Remove Orphaned Packages
-function ongebruikte {
+function pakket-overblijvsels {
     show_info 'Verwijderen ongebruikte pakketen...'
     show_warning 'Vereist administrator rechten'
     sudo apt-get autoremove -y
@@ -49,39 +49,39 @@ function ongebruikte {
 
 # Remove Leftover Config files
 function overblijfsels {
-    show_info 'Removing leftover configuration files...'
-    show_warning 'Requires root privileges'
+    show_info 'Verwijderen van over blijvende configuratie bestanden...'
+    show_warning 'Vereist administrator rechten'
     sudo dpkg --purge $(COLUMNS=200 dpkg -l | grep '^rc' | tr -s ' ' | cut -d ' ' -f 2)
-    show_success 'Done.'
+    show_success 'Klaar.'
     # Check
-    whiptail --title "Finished" --msgbox "Leftover configuration files have been removed." 8 78
+    whiptail --title "Voltooid" --msgbox "Overblijvende configuratie bestanden zijn succesvol verwijderd." 8 78
     cleanup
 }
 
 # Clean apt cache
-function clean-cache {
-    show_info 'Cleaning package cache...'
-    show_warning 'Requires root privileges'
+function schoonmaken-buffer {
+    show_info 'Schoonmaken van pakket buffer...'
+    show_warning 'Vereist administrator rechten'
     sudo apt-get clean
-    show_success 'Done.'
-    whiptail --title "Finished" --msgbox "Package cache has been cleaned." 8 78
+    show_success 'Klaar.'
+    whiptail --title "Voltooid" --msgbox "Pakketen buffer is geleegd." 8 78
     cleanup
 }
 
 # Cleanup System
-function cleanup {
+function schoonmaken {
     eval `resize` 
     CLEANUP=$(whiptail \
         --notags \
-        --title "System Cleanup" \
-        --menu "\nWhat would you like to do?" \
-        --cancel-button "Go Back" \
+        --title "Systeem Schoonmaak" \
+        --menu "\nWat wilt u gaan doen?" \
+        --cancel-button "Ga terug" \
         $LINES $COLUMNS $(( $LINES - 12 )) \
-        clean-cache 'Clean package cache' \
-        leftovers   'Remove leftover configuration files' \
-        orphaned    'Remove orphaned packages' \
-        unused      'Remove unused pre-installed packages' \
-        kernels     'Remove old kernel(s)' \
+        schoonmaken-buffer         'Schoonmaken van de pakket buffer' \
+        pakket-overblijvsels       'Verwijderen van pakket overblijvsels' \
+        ongebruikt                 'Verwijderen van ongebruikte pakketen' \
+        ongebruikte                'Verwijderen van ongebruikte pakketen' \
+        kernels                    'Verwijderen van oudere systeem kern(en)' \
         3>&1 1>&2 2>&3)
      
     exitstatus=$?
