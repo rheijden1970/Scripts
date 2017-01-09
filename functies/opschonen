@@ -1,22 +1,22 @@
-#!/bin/bash
+i#!/bin/bash
 
 dir="$(dirname "$0")"
 
 VERWIJDEREN="$dir/data/verwijderen.lijst"
 
 # Remove unused/unwanted packages that are listed in 'data/purge.list'
-function ongebruikt {
+function overbodig {
     if (eval `resize` && whiptail \
-        --title "Verwijderen van ongebruikte voor geinstalleerde Applicaties" \
+        --title "Verwijderen van overbodige voor geinstalleerde Applicaties" \
         --yesno "Huidige lijst van te verwijderen voor geinstalleerde programma's: \n\n$(cat $VERWIJDEREN) \n\nWeet u het zeker?" \
         $LINES $COLUMNS $(( $LINES - 12 )) \
         --scrolltext ) then
-        show_info 'Verwijderen van ongebruikte voor geinstalleerde programma's...'
+        show_info 'Verwijderen van overbodige voor geinstalleerde programma's...'
         show_warning 'Vereist administrator rechten'
         sudo apt-get remove -y $(cat $VERWIJDEREN)
         # Done
         show_success 'Klaar.'
-        whiptail --title "Voltooid" --msgbox "Uw lijst met ongebruikte programma's zijn verwijderd." 8 78
+        whiptail --title "Voltooid" --msgbox "Uw lijst met overbodige programma's zijn verwijderd." 8 78
         cleanup
     else
         cleanup
@@ -25,12 +25,12 @@ function ongebruikt {
 
 # Verwijdere oude kernels
 function kernels {
-    if (whiptail --title "Verwijder van ongebruite kernels" --yesno "If you're not currently using the newest kernel installed on your system, the following may break it. \n\nAre you sure you want proceed?" 10 60) then
+    if (whiptail --title "Verwijder van overbodige kernels" --yesno "If you're not currently using the newest kernel installed on your system, the following may break it. \n\nAre you sure you want proceed?" 10 60) then
         show_info 'Verwijderen van oudere kernel(s)...'
         show_warning 'Vereist administrator rechten'
         sudo dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | grep -v linux-libc-dev | xargs sudo apt-get -y --no-install-recommends purge
         show_success 'Klaar.'
-        whiptail --title "Voltooid" --msgbox "Oudere kernels zijn succesvol verwijderd." 8 78
+        whiptail --title "Voltooid" --msgbox "Overbodige kernels zijn succesvol verwijderd." 8 78
         cleanup
     else
         cleanup
