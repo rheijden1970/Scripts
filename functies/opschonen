@@ -25,7 +25,7 @@ function overbodig {
 
 # Verwijdere oude kernels
 function kernels {
-    if (whiptail --title "Verwijder van overbodige kernels" --yesno "If you're not currently using the newest kernel installed on your system, the following may break it. \n\nAre you sure you want proceed?" 10 60) then
+    if (whiptail --title "Verwijder van overbodige kernels" --yesno "Als je niet de huidige kernel hebt geinstalleerd op je systeem, de methode kan je systeem beschadigen. \n\nWeet je het zeker om door te gaan?" 10 60) then
         show_info 'Verwijderen van oudere kernel(s)...'
         show_warning 'Vereist administrator rechten'
         sudo dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | grep -v linux-libc-dev | xargs sudo apt-get -y --no-install-recommends purge
