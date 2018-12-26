@@ -1,0 +1,2 @@
+cp /etc/fstab /etc/fstab.backup
+echo "text" | sudo tee -a /etc/fstab >/dev/null
