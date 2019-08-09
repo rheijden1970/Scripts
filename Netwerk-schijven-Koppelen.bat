@@ -31,7 +31,7 @@ goto :RefreshNetDrives
 :RefreshNetDrives
 REM Now we create a list of all network drives that are not 'OK'
 echo .
-echo Zoeken naar Verbroken Netwerk Stations:
+echo Zoeken naar Verbroken netwerk stations:
 
 set "OfflineNetDrives_cnt=0"
 
@@ -185,5 +185,5 @@ for /L %%n in (1 1 !OfflineNetDrives_cnt!) DO (
 for /f "tokens=2 delims=," %%a in ('tasklist /fi "imagename eq explorer.exe" /v /fo:csv /nh ^| findstr /r "!OfflineNetDrives[%%n]!"') do (echo !OfflineNetDrives[%%n]! & taskkill /pid %%a)
 )
 echo .
-echo Done
+echo Klaar!
 timeout /t 5 /nobreak >nul
