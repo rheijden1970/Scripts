@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 REM This is version 2 of the script. Completely changed how it detects off-line network drives since the old method caused issues for some people.
-echo Alle netwerk stations koppelen
+echo Mount al networkshares 
 echo --------------------------------------------------------------------
 echo HCSRoosendaal login script
 echo --------------------------------------------------------------------
@@ -9,7 +9,7 @@ echo --------------------------------------------------------------------
 REM We need to wait for the network to get ready first
 
 echo .
-echo Wachten op Netwerk Connectie
+echo Waiting on network connection
 set LC=0
 goto :waitfornet_
 :waitfornet
@@ -24,14 +24,14 @@ goto :eof
 :NetReady
 REM Once the network is ready we need to wait a bit before the next step or it might fail on some PC's
 echo .
-echo Netwerk Connetie is aanwezig
+echo There is network connection 
 timeout /t 5 /nobreak >nul
 goto :RefreshNetDrives
 
 :RefreshNetDrives
 REM Now we create a list of all network drives that are not 'OK'
 echo .
-echo Zoeken naar Verbroken netwerk stations:
+echo Searching for not mounted networkshares:
 
 set "OfflineNetDrives_cnt=0"
 
@@ -166,10 +166,10 @@ if not errorlevel 1 (
     set "OfflineNetDrives[!OfflineNetDrives_cnt!]=Z:"
 )
 
-echo !OfflineNetDrives_cnt! Ontkoppelde Netwerk Stations gevonden
+echo !OfflineNetDrives_cnt! Unmountd networkshares found...
 echo .
 REM Now we use the windows explorer to access each OFFLINE Network share
-echo Opnieuw alle Network Stations koppelen:
+echo Mount al broken networkshares:
 for /L %%n in (1 1 !OfflineNetDrives_cnt!) DO ( echo !OfflineNetDrives[%%n]! & Start /min explorer "!OfflineNetDrives[%%n]!")
 goto :CleanUp
 
@@ -179,11 +179,11 @@ timeout /t 5 /nobreak >nul
 echo .
 
 REM Now we close the explorer windows which we opened before
-echo Schoonmaken: Sluiten van alle Verkenner Vensters
+echo Cleanup: Close the explorer windows
 
 for /L %%n in (1 1 !OfflineNetDrives_cnt!) DO (
 for /f "tokens=2 delims=," %%a in ('tasklist /fi "imagename eq explorer.exe" /v /fo:csv /nh ^| findstr /r "!OfflineNetDrives[%%n]!"') do (echo !OfflineNetDrives[%%n]! & taskkill /pid %%a)
 )
 echo .
-echo Klaar!
+echo Finisht!
 timeout /t 5 /nobreak >nul
